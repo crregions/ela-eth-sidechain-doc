@@ -7,5 +7,13 @@
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "author": "",
-  "license": "ISC"
+  "license": "ISC",
+  "dependencies": {
+    "@truffle/hdwallet-provider": "^1.0.44"
+  },
+  "devDependencies": {
+    "bn.js": "^5.1.1",
+    "grunt": "^1.0.2",
+    "grunt-prettier": "^2.1.0"
+  }
 }

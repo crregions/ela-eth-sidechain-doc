@@ -19,7 +19,7 @@
  */
 const secrets = require('./secrets.json')
 const HDWalletProvider = require('@truffle/hdwallet-provider');
-const mnemonic = secrets.mnemonic2
+const mnemonic = secrets.mnemonic
 
 // const infuraKey = "fj4jll3k.....";
 //
