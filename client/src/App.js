@@ -11,10 +11,9 @@ import storageCompiledJSON from './contracts/Storage.json'
 // ELAETHSC testnet
 const storageContractAddress = '0x654Ff88970F04B8C2A75dfeEB0B133dE8024c671'
 
+let web3, storageInstance
 
 function App() {
-
-  let web3, storageInstance
 
   const inputEl = useRef(null)
   const [ loading, setLoading ] = useState(false)
@@ -22,22 +21,20 @@ function App() {
   // this will have the value in the Storage contract
   const [ storedNumber, setStoredNumber ] = useState()
 
-  if (window.ethereum){
-    web3 = new Web3(window.ethereum)
-
-    // this triggers the Metamask permission request
-    window.ethereum.enable()
-
-    storageInstance = new web3.eth.Contract(storageCompiledJSON.abi, storageContractAddress)
-  }
-
   // initial load
   useEffect(() => {
     if (!window.ethereum) {
       return
     }
 
-    (async () => {
+    web3 = new Web3(window.ethereum)
+
+    // this triggers the Metamask permission request
+    window.ethereum.enable()
+
+    storageInstance = new web3.eth.Contract(storageCompiledJSON.abi, storageContractAddress)
+
+    ;(async () => {
       const result = await storageInstance.methods.retrieve().call()
 
       setStoredNumber(parseFloat(result))
@@ -58,10 +55,11 @@ function App() {
     const accounts = await web3.eth.getAccounts()
 
     await storageInstance.methods.store(numberToStore).send({
-      from: accounts[0],
+      from: accounts[0], // metamask only has one address for now
       gasPrice: 1000000000
     })
 
+    // of course we can use the value directly, but let's retrieve it as an exercise
     const result = await storageInstance.methods.retrieve().call()
 
     setStoredNumber(parseFloat(result))
