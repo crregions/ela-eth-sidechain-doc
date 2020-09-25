@@ -23,24 +23,39 @@ function App() {
 
   // initial load
   useEffect(() => {
-    if (!window.ethereum) {
-      return
-    }
+    (async () => {
+      if (!window.ethereum) {
+        return
+      }
 
-    web3 = new Web3(window.ethereum)
+      // set our web3 variable to the one passed in by metamask
+      web3 = new Web3(window.ethereum)
 
-    // this triggers the Metamask permission request
-    window.ethereum.enable()
+      // this triggers the Metamask permission request to connect this app to Metamask
+      try {
+        await window.ethereum.enable()
+      } catch(err){
+        alert('You need to connect an account to interact with the smart contract')
+        return
+      }
 
-    storageInstance = new web3.eth.Contract(storageCompiledJSON.abi, storageContractAddress)
+      // instantiate an object to interact with the smart contract based on the ABI method spec
+      storageInstance = new web3.eth.Contract(storageCompiledJSON.abi, storageContractAddress)
 
-    ;(async () => {
+      // await fetching for the current stored value by calling the "retrieve" method
+      // on the smart contract
+
       const result = await storageInstance.methods.retrieve().call()
 
       setStoredNumber(parseFloat(result))
     })()
   }, [])
 
+
+  /**
+   * TODO: this needs to check if Metamask Ethereum.web3 is enabled
+   * @returns {Promise<void>}
+   */
   const storeNumber = async () => {
 
     setLoading(true)
@@ -53,6 +68,10 @@ function App() {
     }
 
     const accounts = await web3.eth.getAccounts()
+    if (accounts.length <= 0){
+      alert('Please select an account')
+      return
+    }
 
     await storageInstance.methods.store(numberToStore).send({
       from: accounts[0], // metamask only has one address for now
