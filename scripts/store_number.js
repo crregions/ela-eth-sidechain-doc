@@ -9,11 +9,11 @@ const mnemonic = secrets.mnemonic
 
 const walletAddress = '0x243C7B804a1CB650c3f584FaC5e33FdB61Cd26CE'
 
-const runProcess = async function (){
+const runProcess = async function () {
   let web3 = new Web3(new HDWalletProvider(mnemonic, 'https://rpc.elaeth.io'))
 
   // if your mnemonic was imported correctly it should match the walletAddress you sent test ELAETHSC
-  if (web3.currentProvider.addresses[0] !== walletAddress.toLowerCase()){
+  if (web3.currentProvider.addresses[0] !== walletAddress.toLowerCase()) {
     console.error('expected wallet address does not match')
     return
   }
@@ -29,8 +29,6 @@ const runProcess = async function (){
 
   console.log('Number stored sucessfully')
 }
-
-
 
 module.exports = function (callback) {
   return runProcess().then(

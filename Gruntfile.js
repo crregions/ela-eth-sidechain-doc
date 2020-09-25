@@ -3,7 +3,13 @@ module.exports = function (grunt) {
     pkg: grunt.file.readJSON('package.json'),
     prettier: {
       files: {
-        src: ['*.js', 'migrations/**/*.js', 'test/**/*.js', 'scripts/**/*.js'],
+        src: [
+          '*.js',
+          'migrations/**/*.js',
+          'test/**/*.js',
+          'scripts/**/*.js',
+          'client/src/**/*.js',
+        ],
       },
     },
   })

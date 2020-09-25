@@ -16,11 +16,10 @@ const storageCompiledJSON = require('../build/contracts/Storage.json')
 
 // self-executing function to wrap async - makes it easier to use await
 ;(async () => {
-
   const web3 = new Web3(new HDWalletProvider(mnemonic, 'https://rpc.elaeth.io'))
 
   // if your mnemonic was imported correctly it should match the walletAddress you sent test ELAETHSC
-  if (web3.currentProvider.addresses[0] !== walletAddress.toLowerCase()){
+  if (web3.currentProvider.addresses[0] !== walletAddress.toLowerCase()) {
     console.error('expected wallet address does not match')
     return
   }
@@ -28,20 +27,23 @@ const storageCompiledJSON = require('../build/contracts/Storage.json')
   const numberToStore = new BN(_.last(process.argv))
 
   /*
-  ******************************************************************************************
-  * Here's where it's different, we need to instantiate the contract instance ourselves
-  * instead of relying on Truffle's "artifacts.require".
-  *
-  * For this we need the ABI, which requires the compiled JSON from the build directory
-  * and the address where we deployed it. This is network specific and you'll need
-  * your own way to handle this if you intend to run this on multiple networks.
-  ******************************************************************************************
+   ******************************************************************************************
+   * Here's where it's different, we need to instantiate the contract instance ourselves
+   * instead of relying on Truffle's "artifacts.require".
+   *
+   * For this we need the ABI, which requires the compiled JSON from the build directory
+   * and the address where we deployed it. This is network specific and you'll need
+   * your own way to handle this if you intend to run this on multiple networks.
+   ******************************************************************************************
    */
-  const storageInstance = new web3.eth.Contract(storageCompiledJSON.abi, storageContractAddress)
+  const storageInstance = new web3.eth.Contract(
+    storageCompiledJSON.abi,
+    storageContractAddress
+  )
 
   await storageInstance.methods.store(numberToStore).send({
     from: walletAddress,
-    gasPrice: 1000000000
+    gasPrice: 1000000000,
   })
 
   process.exit()
