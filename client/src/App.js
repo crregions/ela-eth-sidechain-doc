@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useRef } from 'react';
 import Web3 from 'web3'
-import logo from './logo.svg';
+import logo from './logo.png';
 import { LoadingOverlay } from './Loading'
 
 import './App.css'
@@ -72,9 +72,14 @@ function App() {
   return (
     <div className="App">
         <img src={logo} className="App-logo" alt="logo"/>
+        <p className="my-3">
+          <span className="font-weight-light">Smart Contract:</span>
+
+          <a href="https://testnet.elaeth.io/address/0x654ff88970f04b8c2a75dfeeb0b133de8024c671/transactions" target="_blank">0x654Ff88970F04B8C2A75dfeEB0B133dE8024c671</a>
+        </p>
         {window.ethereum ?
           <p>
-            Stored Number: {storedNumber}
+            Stored Number: <b>{storedNumber}</b>
           </p> :
           <p>No Ethereum Extension Detected!</p>
         }
@@ -82,7 +87,7 @@ function App() {
       <div>
         {loading && <LoadingOverlay/>}
         <input type="number" ref={inputEl}/>
-        <button className="btn btn-info" onClick={storeNumber}>Store Number</button>
+        <button className="btn btn-info ml-1" onClick={storeNumber}>Store Number</button>
       </div>
     </div>
   );
